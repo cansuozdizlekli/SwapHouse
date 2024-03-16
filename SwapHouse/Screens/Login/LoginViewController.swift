@@ -15,11 +15,26 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initUI()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         checkUserInfo()
+    }
+    
+    private func initUI(){
+
+        emailTextField.becomeFirstResponder()
+        emailTextField.layer.masksToBounds = true
+        emailTextField.layer.cornerRadius = 15.0
+        emailTextField.layer.borderWidth = 1.0
+        emailTextField.layer.borderColor = UIColor.lightGray.cgColor
+
+        passwordTextField.layer.masksToBounds = true
+        passwordTextField.layer.cornerRadius = 15.0
+        passwordTextField.layer.borderWidth = 1.0
+        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     func validateFields(){
@@ -49,7 +64,7 @@ class LoginViewController: UIViewController {
     func checkUserInfo(){
         if Auth.auth().currentUser != nil {
             print(Auth.auth().currentUser?.uid)
-            navigateToHomePage()
+            
         }
     }
 
