@@ -6,13 +6,12 @@
 //
 
 import UIKit
-import NVActivityIndicatorView
 
 class BaseViewController: UIViewController {
     private var viewModel: BaseViewModel!
     
     private var progressViewCount = 0
-    private lazy var progressView = NVActivityIndicatorView(frame: .zero)
+//    private lazy var progressView = NVActivityIndicatorView(frame: .zero)
     let backView = UIView()
     
     private var workItem: DispatchWorkItem?
@@ -29,7 +28,7 @@ class BaseViewController: UIViewController {
         viewModel.viewDidLoad()
         
         view.addSubview(backView)
-        configureProgressView()
+//        configureProgressView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,19 +56,19 @@ class BaseViewController: UIViewController {
         return nil
     }
     
-    private func configureProgressView() {
-        progressView = NVActivityIndicatorView(frame: .zero, type: .ballSpinFadeLoader, color: .white, padding: 20)
-        progressView.translatesAutoresizingMaskIntoConstraints = false
-        backView.addSubview(progressView)
-        NSLayoutConstraint.activate([
-            progressView.widthAnchor.constraint(equalToConstant: 90),
-            progressView.heightAnchor.constraint(equalToConstant: 90),
-            progressView.centerXAnchor.constraint(equalTo: self.backView.centerXAnchor),
-            progressView.centerYAnchor.constraint(equalTo: self.backView.centerYAnchor)
-        ])
-//        progressView.backgroundColor = .systemGray4
-        progressView.layer.cornerRadius = 8
-    }
+//    private func configureProgressView() {
+//        progressView = NVActivityIndicatorView(frame: .zero, type: .ballSpinFadeLoader, color: .white, padding: 20)
+//        progressView.translatesAutoresizingMaskIntoConstraints = false
+//        backView.addSubview(progressView)
+//        NSLayoutConstraint.activate([
+//            progressView.widthAnchor.constraint(equalToConstant: 90),
+//            progressView.heightAnchor.constraint(equalToConstant: 90),
+//            progressView.centerXAnchor.constraint(equalTo: self.backView.centerXAnchor),
+//            progressView.centerYAnchor.constraint(equalTo: self.backView.centerYAnchor)
+//        ])
+////        progressView.backgroundColor = .systemGray4
+//        progressView.layer.cornerRadius = 8
+//    }
 }
 
 
@@ -82,7 +81,7 @@ extension BaseViewController: BaseViewModelDelegate {
         }
 
         addBackView()
-        progressView.startAnimating()
+//        progressView.startAnimating()
     }
     
     func contentDidLoad() {
@@ -90,7 +89,7 @@ extension BaseViewController: BaseViewModelDelegate {
         guard progressViewCount == 0 else {
             return
         }
-        progressView.stopAnimating()
+//        progressView.stopAnimating()
         removeBackView()
     }
     

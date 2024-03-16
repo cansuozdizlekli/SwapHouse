@@ -6,20 +6,20 @@
 //
 
 import UIKit
-//import Firebase
-//import FirebaseAuth
+import Firebase
+import FirebaseAuth
 
 class RegisterViewController: UIViewController {
 
     @IBOutlet weak var fullNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-//    var loginViewController = LoginViewController()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        
     }
     
     @IBAction func signUpButtonTapped(_ sender: Any) {
@@ -39,16 +39,29 @@ class RegisterViewController: UIViewController {
     }
     
     @IBAction func signInButtonTapped(_ sender: Any) {
-//        presentVC(to: loginViewController)
+        navigateToLoginPage()
     }
     
-    func signUp(){
+    private func signUp(){
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (authResult , error) in
             guard let user = authResult?.user , error == nil else {
                 print("error \(String(describing: error?.localizedDescription))")
                 return
             }
         }
+        navigateToHomePage()
+    }
+    
+    private func navigateToLoginPage(){
+        let vc = LoginViewController(nibName: "LoginViewController", bundle: nil)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
+    private func navigateToHomePage(){
+        let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 
 }
