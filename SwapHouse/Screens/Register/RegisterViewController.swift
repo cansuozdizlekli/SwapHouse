@@ -14,7 +14,6 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var fullNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    var count = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,27 +22,33 @@ class RegisterViewController: UIViewController {
     }
     
     @IBAction func signUpButtonTapped(_ sender: Any) {
-        
+        var isValidated = true
         // Alanların doluluk kontrolü ve uyarı mesajlarını eklemek
-        if fullNameTextField.text?.isEmpty == true {
+        if fullNameTextField.text?.isEmpty == true  {
             fullNameTextField.toggleWarningMessage(message: "The name is empty.")
-            fullNameTextField.addBorder()
-            return
+            isValidated = false
+        }else {
+            fullNameTextField.toggleWarningMessage(message: "")
         }
         
         if emailTextField.text?.isEmpty == true {
             emailTextField.toggleWarningMessage(message: "The email is empty.")
-            emailTextField.addBorder()
-            return
+            isValidated = false
+        }else {
+            emailTextField.toggleWarningMessage(message: "")
         }
         
         if passwordTextField.text?.isEmpty == true {
             passwordTextField.toggleWarningMessage(message: "The password is empty.")
-            passwordTextField.addBorder()
-            return
+            isValidated = false
+        }
+        else {
+            passwordTextField.toggleWarningMessage(message: "")
         }
         
-        signUp()
+        if isValidated == true {
+            signUp()
+        }
     }
 
     
@@ -76,15 +81,12 @@ class RegisterViewController: UIViewController {
                     print(error?.localizedDescription)
                     if errorDescription.contains("email") {
                         self.emailTextField.toggleWarningMessage(message: errorDescription)
-                        self.emailTextField.addBorder()
                         print("giriyo mu")
                     }
                     if errorDescription.contains("password") {
                         self.passwordTextField.toggleWarningMessage(message: errorDescription)
-                        self.passwordTextField.addBorder()
                     } else {
                         self.fullNameTextField.toggleWarningMessage(message: errorDescription)
-                        self.fullNameTextField.addBorder()
                     }
                 }
                 return
