@@ -22,33 +22,10 @@ class RegisterViewController: UIViewController {
     }
     
     @IBAction func signUpButtonTapped(_ sender: Any) {
-        var isValidated = true
-        // Alanların doluluk kontrolü ve uyarı mesajlarını eklemek
-        if fullNameTextField.text?.isEmpty == true  {
-            fullNameTextField.toggleWarningMessage(message: "The name is empty.")
-            isValidated = false
-        }else {
-            fullNameTextField.toggleWarningMessage(message: "")
+        guard validateFields() else {
+            return
         }
-        
-        if emailTextField.text?.isEmpty == true {
-            emailTextField.toggleWarningMessage(message: "The email is empty.")
-            isValidated = false
-        }else {
-            emailTextField.toggleWarningMessage(message: "")
-        }
-        
-        if passwordTextField.text?.isEmpty == true {
-            passwordTextField.toggleWarningMessage(message: "The password is empty.")
-            isValidated = false
-        }
-        else {
-            passwordTextField.toggleWarningMessage(message: "")
-        }
-        
-        if isValidated == true {
-            signUp()
-        }
+        signUp()
     }
 
     
@@ -58,35 +35,20 @@ class RegisterViewController: UIViewController {
     
     private func initUI(){
         fullNameTextField.layer.masksToBounds = true
-        fullNameTextField.layer.cornerRadius = 15.0
-        fullNameTextField.layer.borderWidth = 1.0
-        fullNameTextField.layer.borderColor = UIColor.lightGray.cgColor
-        
         emailTextField.layer.masksToBounds = true
-        emailTextField.layer.cornerRadius = 15.0
-        emailTextField.layer.borderWidth = 1.0
-        emailTextField.layer.borderColor = UIColor.lightGray.cgColor
-        
         passwordTextField.layer.masksToBounds = true
-        passwordTextField.layer.cornerRadius = 15.0
-        passwordTextField.layer.borderWidth = 1.0
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
     }
     
-    private func signUp(){
+    private func signUp() {
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (authResult , error) in
-            guard let user = authResult?.user , error == nil else {
-                print("error \(String(describing: error?.localizedDescription))")
+            guard let user = authResult?.user, error == nil else {
                 if let errorDescription = error?.localizedDescription {
-                    print(error?.localizedDescription)
                     if errorDescription.contains("email") {
-                        self.emailTextField.toggleWarningMessage(message: errorDescription)
-                        print("giriyo mu")
-                    }
-                    if errorDescription.contains("password") {
-                        self.passwordTextField.toggleWarningMessage(message: errorDescription)
+                        self.emailTextField.toggleWarningMessageAndBorderColor(message: errorDescription)
+                    } else if errorDescription.contains("password") {
+                        self.passwordTextField.toggleWarningMessageAndBorderColor(message: errorDescription)
                     } else {
-                        self.fullNameTextField.toggleWarningMessage(message: errorDescription)
+                        self.fullNameTextField.toggleWarningMessageAndBorderColor(message: errorDescription)
                     }
                 }
                 return
@@ -94,7 +56,7 @@ class RegisterViewController: UIViewController {
             self.navigateToHomePage()
         }
     }
-    
+
     private func navigateToLoginPage(){
         let vc = LoginViewController(nibName: "LoginViewController", bundle: nil)
         vc.modalPresentationStyle = .fullScreen
@@ -105,6 +67,33 @@ class RegisterViewController: UIViewController {
         let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
+    }
+    
+    private func validateFields() -> Bool {
+        var isValidated = true
+        
+        if fullNameTextField.text?.isEmpty == true  {
+            fullNameTextField.toggleWarningMessageAndBorderColor(message: "The name is empty.")
+            isValidated = false
+        } else {
+            fullNameTextField.toggleWarningMessageAndBorderColor(message: "")
+        }
+        
+        if emailTextField.text?.isEmpty == true {
+            emailTextField.toggleWarningMessageAndBorderColor(message: "The email is empty.")
+            isValidated = false
+        } else {
+            emailTextField.toggleWarningMessageAndBorderColor(message: "")
+        }
+        
+        if passwordTextField.text?.isEmpty == true {
+            passwordTextField.toggleWarningMessageAndBorderColor(message: "The password is empty.")
+            isValidated = false
+        } else {
+            passwordTextField.toggleWarningMessageAndBorderColor(message: "")
+        }
+        
+        return isValidated
     }
     
 
