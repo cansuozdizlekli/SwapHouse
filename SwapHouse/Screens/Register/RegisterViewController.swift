@@ -33,10 +33,17 @@ class RegisterViewController: UIViewController {
         navigateToLoginPage()
     }
     
+    
+    @IBAction func forgetPasswordButtonTapped(_ sender: Any) {
+        navigateToForgetPasswordPage()
+    }
+    
+    
     private func initUI(){
         fullNameTextField.layer.masksToBounds = true
         emailTextField.layer.masksToBounds = true
         passwordTextField.layer.masksToBounds = true
+        passwordTextField.textContentType = .oneTimeCode
     }
     
     private func signUp() {
@@ -65,6 +72,12 @@ class RegisterViewController: UIViewController {
     
     private func navigateToHomePage(){
         let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
+    private func navigateToForgetPasswordPage(){
+        let vc = ForgetPasswordViewController(nibName: "ForgetPasswordViewController", bundle: nil)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
     }
