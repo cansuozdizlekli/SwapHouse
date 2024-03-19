@@ -91,7 +91,7 @@ class LoginViewController: UIViewController {
     }
     
     private func navigateToHomePage(){
-        let vc = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let vc = TabBarController(nibName: "TabBarController", bundle: nil)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true) {
             let transition = CATransition()

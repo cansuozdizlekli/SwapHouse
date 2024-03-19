@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 extension UIColor {
+    static let primaryWhite = UIColor.init(red: 255, green: 255, blue: 255, reqAlpha: 1)
     static let primaryBlue = UIColor.init(red: 69, green: 133, blue: 255, reqAlpha: 1)
     static let primaryPurple = UIColor.init(red: 54, green: 21, blue: 108, reqAlpha: 1)
 }
