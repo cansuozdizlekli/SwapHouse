@@ -19,7 +19,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLayoutSubviews()
         additionalSafeAreaInsets.bottom = 6
         tabBar.tintColor = .blue
-        tabBar.addShadow(shadowColor: .black, offSet: CGSize.zero, opacity: 0.5, shadowRadius: 10, cornerRadius: 15, corners: [.topLeft,.topRight])
+        tabBar.addShadow(shadowColor: .gray, offSet: CGSize.zero, opacity: 0.2, shadowRadius: 3, cornerRadius: 15, corners: [.topLeft,.topRight])
     }
 
     override func viewWillAppear(_ animated: Bool) {
