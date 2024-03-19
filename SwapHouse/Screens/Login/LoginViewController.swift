@@ -24,47 +24,52 @@ class LoginViewController: UIViewController {
     }
     
     private func initUI(){
-
-        emailTextField.becomeFirstResponder()
         emailTextField.layer.masksToBounds = true
-        emailTextField.layer.cornerRadius = 15.0
-        emailTextField.layer.borderWidth = 1.0
-        emailTextField.layer.borderColor = UIColor.lightGray.cgColor
-
         passwordTextField.layer.masksToBounds = true
-        passwordTextField.layer.cornerRadius = 15.0
-        passwordTextField.layer.borderWidth = 1.0
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
     }
     
-    func validateFields(){
+    func validateFields() -> Bool{
+        var isValidated = true
+        
         if emailTextField.text?.isEmpty == true {
-            print("no email")
-            return
+            emailTextField.toggleWarningMessageAndBorderColor(message: "The email is empty.")
+            isValidated = false
+        } else {
+            emailTextField.toggleWarningMessageAndBorderColor(message: "")
         }
+        
         if passwordTextField.text?.isEmpty == true {
-            print("no email")
-            return
+            passwordTextField.toggleWarningMessageAndBorderColor(message: "The password is empty.")
+            isValidated = false
+        } else {
+            passwordTextField.toggleWarningMessageAndBorderColor(message: "")
         }
-        login()
+        
+        return isValidated
     }
     
     func login(){
-        Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { [weak self] authResult , err in
-            guard let strongSelf = self else {
+        Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { (authResult , error) in
+            guard let user = authResult?.user, error == nil else {
+                if let errorDescription = error?.localizedDescription {
+                    if errorDescription.contains("email") {
+                        self.emailTextField.toggleWarningMessageAndBorderColor(message: errorDescription)
+                    } else if errorDescription.contains("password") {
+                        self.passwordTextField.toggleWarningMessageAndBorderColor(message: errorDescription)
+                    }
+                }
                 return
             }
-            if let error = err {
-                print("error \(String(describing: err?.localizedDescription))")
-            }
+            self.checkUserInfo()
         }
-        self.checkUserInfo()
     }
     
     func checkUserInfo(){
         if Auth.auth().currentUser != nil {
-            print(Auth.auth().currentUser?.uid)
-            
+            print(Auth.auth().currentUser?.email)
+            self.navigateToHomePage()
+        }else {
+            print("giris yapılamadı")
         }
     }
 
@@ -73,7 +78,10 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginButtonClicked(_ sender: Any) {
-        validateFields()
+        guard validateFields() else {
+            return
+        }
+        login()
     }
     
     private func navigateToRegisterPage(){
@@ -83,8 +91,14 @@ class LoginViewController: UIViewController {
     }
     
     private func navigateToHomePage(){
-        let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
+        let vc = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true, completion: nil)
+        present(vc, animated: true) {
+            let transition = CATransition()
+            transition.type = .push
+            transition.subtype = .fromLeft
+            transition.duration = 0.3
+            self.view.window?.layer.add(transition, forKey: kCATransition)
+        }
     }
 }

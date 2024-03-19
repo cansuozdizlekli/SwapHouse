@@ -34,6 +34,7 @@ extension UITextField {
                 newWarningLabel.textColor = UIColor.red
                 newWarningLabel.text = message
                 newWarningLabel.textAlignment = .left
+                newWarningLabel.numberOfLines = 0
                 newWarningLabel.tag = 999
                 self.superview?.addSubview(newWarningLabel)
                 self.layer.borderColor = UIColor.red.cgColor
@@ -44,6 +45,7 @@ extension UITextField {
                 newWarningLabel.textColor = UIColor.red
                 newWarningLabel.text = message
                 newWarningLabel.textAlignment = .left
+                newWarningLabel.numberOfLines = 0
                 newWarningLabel.tag = 999
                 self.superview?.addSubview(newWarningLabel)
                 self.layer.borderColor = UIColor.red.cgColor
